@@ -30,7 +30,8 @@ class LZSS:
                     block_enc.extend(b'\x01' + packed.to_bytes(3, 'big'))
                     i += best[1]
                 else:
-                    block_enc.extend(b'\x00' + block[i:i + 1])
+                    block_enc.append(0)
+                    block_enc.append(block[i])
                     i += 1
 
             encoded.extend(BlockProcessor.add_block_header(block_enc))
