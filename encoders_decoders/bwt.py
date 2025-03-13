@@ -1,5 +1,22 @@
 from .blockProcessor import *
 
+class _Sorting:
+    def __init__(self):
+        pass
+
+    def sort(self, arr):
+        if len(arr) <= 1:
+            return arr
+
+        first, middle, last = arr[0], arr[len(arr) // 2], arr[-1]
+        pivot = sorted([first, middle, last])[1]
+
+        left = [x for x in arr if x < pivot]
+        middle = [x for x in arr if x == pivot]
+        right = [x for x in arr if x > pivot]
+
+        return self.sort(left) + middle + self.sort(right)
+
 
 class BWT:
     def __init__(self, block_size=1024):
@@ -14,7 +31,7 @@ class BWT:
                 continue
 
             rotations = [block[i:] + block[:i] for i in range(len(block))]
-            sa = sorted(range(len(rotations)), key=lambda i: rotations[i])
+            sa = _Sorting().sort(rotations)
             last_col = bytes(rotations[i][-1] for i in sa)
             orig_idx = sa.index(0)
 
