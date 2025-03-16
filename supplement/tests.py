@@ -114,7 +114,7 @@ class TestCompressionManager(unittest.TestCase):
         - проверяем запись метаданных в выходном файле,
         - возвращается правильное количество блоков.
         """
-        sample_data = b"Test data for process file" * 10
+        sample_data = b"Test data for supplement file" * 10
         with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
             tmp_file.write(sample_data)
             tmp_file_path = Path(tmp_file.name)
