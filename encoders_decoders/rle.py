@@ -2,7 +2,7 @@ from .blockProcessor import *
 
 
 class RLE:
-    def __init__(self, block_size=8192):
+    def __init__(self, block_size):
         self.block_size = block_size
 
     def encode(self, data: bytes) -> bytes:

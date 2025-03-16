@@ -2,7 +2,7 @@ from .blockProcessor import *
 
 
 class LZW:
-    def __init__(self, block_size=4096):
+    def __init__(self, block_size):
         self.block_size = block_size
         self.reset_dict()
 
@@ -12,9 +12,10 @@ class LZW:
         self.rev_dict = {i: bytes([i]) for i in range(256)}
 
     def encode(self, data: bytes) -> bytes:
-        encoded = bytearray()
+        bp = BlockProcessor()
 
-        for block in BlockProcessor.split_blocks(data, self.block_size):
+        encoded = bytearray()
+        for block in bp.split_blocks(data, self.block_size):
             self.reset_dict()
             w = b''
             block_enc = bytearray()
@@ -32,16 +33,18 @@ class LZW:
             if w:
                 block_enc.extend(struct.pack('>H', self.dictionary[w]))
 
-            encoded.extend(BlockProcessor.add_block_header(block_enc))
+            encoded.extend(bp.add_block_header(block_enc))
 
         return bytes(encoded)
 
     def decode(self, data: bytes) -> bytes:
+        bp = BlockProcessor()
+
         decoded = bytearray()
         ptr = 0
 
         while ptr < len(data):
-            block_enc, ptr = BlockProcessor.read_block(data, ptr)
+            block_enc, ptr = bp.read_block(data, ptr)
             if not block_enc:
                 break
 

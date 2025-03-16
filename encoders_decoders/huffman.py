@@ -4,13 +4,14 @@ from heapq import heappop, heapify, heappush
 
 
 class Huffman:
-    def __init__(self, block_size=4096):
+    def __init__(self, block_size):
         self.block_size = block_size
 
     def encode(self, data: bytes) -> bytes:
-        encoded = bytearray()
+        bp = BlockProcessor()
 
-        for block in BlockProcessor.split_blocks(data, self.block_size):
+        encoded = bytearray()
+        for block in bp.split_blocks(data, self.block_size):
             freq = defaultdict(int)
             for b in block:
                 freq[b] += 1
@@ -39,16 +40,18 @@ class Huffman:
             for i in range(0, len(bit_str), 8):
                 block_enc.append(int(bit_str[i:i + 8], 2))
 
-            encoded.extend(BlockProcessor.add_block_header(header + block_enc))
+            encoded.extend(bp.add_block_header(header + block_enc))
 
         return bytes(encoded)
 
     def decode(self, data: bytes) -> bytes:
+        bp = BlockProcessor()
+
         decoded = bytearray()
         ptr = 0
 
         while ptr < len(data):
-            block, ptr = BlockProcessor.read_block(data, ptr)
+            block, ptr = bp.read_block(data, ptr)
             if not block:
                 break
 

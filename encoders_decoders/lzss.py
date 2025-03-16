@@ -2,14 +2,16 @@ from .blockProcessor import *
 import struct
 
 class LZSS:
-    def __init__(self, window_size=8192, block_size=4096):
+    def __init__(self, block_size, window_size=2048):
         self.window_size = window_size
         self.block_size = block_size
 
     def encode(self, data: bytes) -> bytes:
+        bp = BlockProcessor()
+
         encoded = bytearray()
 
-        for block in BlockProcessor.split_blocks(data, self.block_size):
+        for block in bp.split_blocks(data, self.block_size):
             block_enc = bytearray(struct.pack('>I', self.window_size))
             i = 0
 
@@ -34,16 +36,18 @@ class LZSS:
                     block_enc.append(block[i])
                     i += 1
 
-            encoded.extend(BlockProcessor.add_block_header(block_enc))
+            encoded.extend(bp.add_block_header(block_enc))
 
         return bytes(encoded)
 
     def decode(self, data: bytes) -> bytes:
+        bp = BlockProcessor()
+
         decoded = bytearray()
         ptr = 0
 
         while ptr < len(data):
-            block_enc, ptr = BlockProcessor.read_block(data, ptr)
+            block_enc, ptr = bp.read_block(data, ptr)
             if not block_enc:
                 break
 

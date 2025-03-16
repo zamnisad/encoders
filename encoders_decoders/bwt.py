@@ -20,8 +20,9 @@ class _Sorting:
         result = []
         i = j = 0
         while i < len(left) and j < len(right):
-            # Стабильность: если элементы равны, берём левый
-            if rotations[left[i]] <= rotations[right[j]]:
+            # При равных ротациях сравниваем исходные индексы
+            if (rotations[left[i]] < rotations[right[j]] or
+                    (rotations[left[i]] == rotations[right[j]] and left[i] < right[j])):
                 result.append(left[i])
                 i += 1
             else:
@@ -31,12 +32,12 @@ class _Sorting:
         result.extend(right[j:])
         return result
 
+
 class BWT:
-    def __init__(self, block_size=1024):
+    def __init__(self, block_size):
         self.block_size = block_size
 
     def encode(self, data: bytes) -> bytes:
-        data = data.lstrip(b'\x00')
 
         encoded = bytearray()
         for block in BlockProcessor.split_blocks(data, self.block_size):
@@ -89,4 +90,4 @@ class BWT:
 
             decoded.extend(result)
 
-        return bytes(decoded).lstrip(b'\x00')
+        return bytes(decoded)
