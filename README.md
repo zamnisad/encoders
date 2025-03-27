@@ -19,7 +19,8 @@
 │   ├── gray_image.raw
 │   ├── real_jpg.jpg
 │   ├── real_text.txt
-│   └── realistic_text.txt
+│   ├── realistic_text.txt
+│   └── test.exe
 ├── encoders_decoders
 │   ├── __init__.py
 │   ├── blockProcessor.py
