@@ -20,7 +20,6 @@ class _Sorting:
         result = []
         i = j = 0
         while i < len(left) and j < len(right):
-            # При равных ротациях сравниваем исходные индексы
             if (rotations[left[i]] < rotations[right[j]] or
                     (rotations[left[i]] == rotations[right[j]] and left[i] < right[j])):
                 result.append(left[i])

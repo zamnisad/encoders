@@ -7,7 +7,9 @@ def checkout():
              'color_image.raw',
              'gray_image.raw',
              'real_text.txt',
-             'enwik7']
+             'enwik7',
+             'test.exe',
+             'real_jpg.jpg']
     for name in files:
         path = Path(os.path.join("./compression_test_data/", name))
         if not path.exists():

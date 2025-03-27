@@ -153,7 +153,7 @@ class CompressionManager:
                 self.results[name] = (
                     len(data),
                     len(encoded),
-                    len(encoded) / len(data),
+                    len(data) / len(encoded),
                     enc_time,
                     dec_time,
                     enc_time + dec_time
